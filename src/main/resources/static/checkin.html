@@ -1,0 +1,55 @@
+<div class="container marketing" ng-controller="borrowerController">
+	<h1>Check-in Books List</h1>
+	<div class="col-md-10">
+		<ul class="pagination">
+			<li class="page-item"><a class="page-link" href=""
+				ng-click="pagination2.prevPage()">&laquo;</a></li>
+			<li class="page-item"
+				ng-repeat="n in [] | range: pagination2.numPages"
+				ng-class="{active: n == pagination2.page}"><a class="page-link"
+				href="" ng-click="pagination2.toPageId(n)">{{n + 1}}</a></li>
+			<li class="page-item"><a class="page-link" href=""
+				ng-click="pagination2.nextPage()">&raquo;</a></li>
+		</ul>
+	</div>
+	<div id="listOfLonas">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Branch name</th>
+					<th scope="col">Book title</th>
+					<th scope="col">Due Date</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr
+					ng-repeat="loan in ::loans | startFrom: pagination.page * pagination.perPage | limitTo: pagination.perPage">
+					<td>{{$index+1}}</td>
+					<td>{{loan.branch.branchName}}</td>
+					<td>{{loan.book.title}}</td>
+					<td>{{loan.dueDate}}</td>
+					<th scope="col"><button type="button" class="btn btn-primary"
+							data-toggle="modal" data-target="#resultModal"
+							ng-click="checkIn(loan)">CheckIn</button></th>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- Result modal -->
+	<div class="modal fade" id="resultModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">{{resultMessage}}</h5>
+					<button type="button" data-dismiss="modal"
+						class="btn btn-success btn-lg float-right" id="btnLogin">OK</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- Result modal -->
+</div>
+</div>

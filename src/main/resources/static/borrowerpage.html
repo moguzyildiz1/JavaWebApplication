@@ -1,0 +1,119 @@
+<div class="container marketing" ng-controller="adminBorrowerController">
+	<h1>List of Borrowers in LMS</h1>
+	<div class="col-md-4 mb-3">
+		<label for="validationCustomUsername">Search by Borrower Name</label>
+		<div class="input-group">
+			<input type="text" class="form-control" id="validationCustomUsername"
+				ng-model="searchTitle" placeholder="Book Name"
+				aria-describedby="inputGroupPrepend" required
+				ng-change="searchBook()">
+			<div class="invalid-feedback">Please choose a borrower name.</div>
+		</div>
+	</div>
+	<div class="col-md-10">
+		<ul class="pagination">
+			<li class="page-item"><a class="page-link" href=""
+				ng-click="pagination.prevPage()">&laquo;</a></li>
+			<li class="page-item"
+				ng-repeat="n in [] | range: pagination.numPages"
+				ng-class="{active: n == pagination.page}"><a class="page-link"
+				href="" ng-click="pagination.toPageId(n)">{{n + 1}}</a></li>
+			<li class="page-item"><a class="page-link" href=""
+				ng-click="pagination.nextPage()">&raquo;</a></li>
+		</ul>
+	</div>
+	<div id="listOfBooks">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Borrower name</th>
+					<th scope="col">Edit</th>
+					<th scope="col">Delete</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr
+					ng-repeat="borrower in ::borrowers | startFrom: pagination.page * pagination.perPage | limitTo: pagination.perPage">
+					<td>{{$index+1}}</td>
+					<td>{{borrower.borrowerName}}</td>
+					<th scope="col"><button type="button" class="btn btn-primary"
+							data-toggle="modal" data-target="#editBorrowerModal"
+							ng-click="passToBorrower(borrower)">Edit</button></th>
+					<th scope="col"><button type="button" class="btn btn-danger"
+							ng-click="deleteBorrower(borrower)">Delete</button></th>
+				</tr>
+			</tbody>
+		</table>
+		<button type="button" class="btn btn-primary" data-toggle="modal"
+			data-target="#addModal">Add New Borrower</button>
+	</div>
+	<!-- START- Add Modal - START -->
+	<div class="modal fade" id="addModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Add new
+						borrower</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container">
+						Enter borrower name to add:<br /> <input type="text" size="40"
+							maxlength="45" ng-model="addedBorrowerName">
+					</div>
+					<div class="container">
+						Enter borrower address to add:<br /> <input type="text" size="40"
+							maxlength="45" ng-model="addedBorrowerAddress">
+					</div>
+					<div class="container">
+						Enter borrower phone to add:<br /> <input type="text" size="40"
+							maxlength="45" ng-model="addedBorrowerPhone">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="saveBorrower()" data-dismiss="modal">Add
+						borrower</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- END - Add Modal - END -->
+
+	<!-- START- EDIT Modal - START -->
+	<div class="modal fade" id="editBorrowerModal" tabindex="-1"
+		role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Edit Book</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container">
+						Enter new borrower name to edit:<br /> <input type="text"
+							size="40" maxlength="45" ng-model="passBorrower.borrowerName"
+							value="passBorrower.borrowerName">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="editBorrower()" data-dismiss="modal">Save
+						changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

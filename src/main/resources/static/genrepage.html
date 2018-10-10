@@ -1,0 +1,97 @@
+<div class="container marketing" ng-controller="adminGenreController">
+	<h1>List of Genres in LMS</h1>
+	<div class="col-md-10">
+		<ul class="pagination">
+			<li class="page-item"><a class="page-link" href=""
+				ng-click="pagination.prevPage()">&laquo;</a></li>
+			<li class="page-item"
+				ng-repeat="n in [] | range: pagination.numPages"
+				ng-class="{active: n == pagination.page}"><a class="page-link"
+				href="" ng-click="pagination.toPageId(n)">{{n + 1}}</a></li>
+			<li class="page-item"><a class="page-link" href=""
+				ng-click="pagination.nextPage()">&raquo;</a></li>
+		</ul>
+	</div>
+	<div id="listOfGenres">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Genre name</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr
+					ng-repeat="genre in ::genres | startFrom: pagination.page * pagination.perPage | limitTo: pagination.perPage">
+					<td>{{$index+1}}</td>
+					<td>{{genre.genreName}}</td>
+					<th scope="col"><button type="button" class="btn btn-primary"
+							data-toggle="modal" data-target="#editGenreModal"
+							ng-click="passToGenre(genre)">Edit Genre</button></th>
+					<th scope="col"><button type="button" class="btn btn-primary"
+							ng-click="deleteGenre(genre)">Delete Genre</button></th>
+				</tr>
+			</tbody>
+		</table>
+		<button type="button" class="btn btn-primary" data-toggle="modal"
+			data-target="#addModal">Add New Genre</button>
+	</div>
+
+	<!-- START- Add Modal - START -->
+	<div class="modal fade" id="addModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Add new genre</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container">
+						Enter Genre Name to add:<br /> <input type="text"
+							maxlength="45" ng-model="addedGenreName">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="saveGenre()" data-dismiss="modal">Add genre</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- END - Add Modal - END -->
+	
+	<!-- START- EDIT Modal - START -->
+	<div class="modal fade" id="editGenreModal" tabindex="-1"
+		role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Edit Genre</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container">
+						Enter new genre name to edit:<br /> <input type="text"
+							maxlength="45" ng-model="passGenre.genreName"
+							value="passGenre.genreName">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="editGenre(passGenre)" data-dismiss="modal">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

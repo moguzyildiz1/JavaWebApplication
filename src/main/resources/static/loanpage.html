@@ -1,0 +1,51 @@
+<div class="container marketing" ng-controller="adminLoanController">
+	<h1>List of Loans in LMS</h1>
+	<div class="col-md-4 mb-3">
+		<label for="validationCustomUsername">Search by Book Names</label>
+		<div class="input-group">
+			<input type="text" class="form-control" id="validationCustomUsername"
+				ng-model="searchTitle" placeholder="Book Name"
+				aria-describedby="inputGroupPrepend" required
+				ng-change="searchBook()">
+			<div class="invalid-feedback">Please choose a book name.</div>
+		</div>
+	</div>
+	<div class="col-md-10">
+		<ul class="pagination">
+			<li class="page-item"><a class="page-link" href=""
+				ng-click="pagination.prevPage()">&laquo;</a></li>
+			<li class="page-item"
+				ng-repeat="n in [] | range: pagination.numPages"
+				ng-class="{active: n == pagination.page}"><a class="page-link"
+				href="" ng-click="pagination.toPageId(n)">{{n + 1}}</a></li>
+			<li class="page-item"><a class="page-link" href=""
+				ng-click="pagination.nextPage()">&raquo;</a></li>
+		</ul>
+	</div>
+	<div id="listOfBooks">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Borrower</th>
+					<th scope="col">Book</th>
+					<th scope="col">Branch</th>
+					<th scope="col">Due Date</th>
+					<th scope="col">Postpone</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr
+					ng-repeat="loan in ::loans | startFrom: pagination.page * pagination.perPage | limitTo: pagination.perPage">
+					<td>{{$index+1}}</td>
+					<td>{{loan.borrower.borrowerName}}</td>
+					<td>{{loan.book.title}}</td>
+					<td>{{loan.library.branchName}}</td>
+					<td>{{loan.dueDate}}</td>
+					<th scope="col"><button type="button" class="btn btn-primary"
+							ng-click="editLoan(loan)">Postpone</button></th>
+				</tr>
+			</tbody>
+		</table>
+	</div>	
+</div>

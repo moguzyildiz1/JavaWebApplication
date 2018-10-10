@@ -1,0 +1,81 @@
+<div id="myCarousel" class="carousel slide" data-ride="carousel"
+	ng-controller="borrowerController">
+	<!-- ilk div tamamini kapsamalidir -->
+
+	<div class="container marketing">
+
+		<!-- Three columns of text below the carousel -->
+		<div class="row">
+			<div class="col-lg-4">
+				<img class="rounded-circle"
+					src="https://image.flaticon.com/icons/svg/270/270023.svg"
+					alt="Generic placeholder image" width="140" height="140">
+				<h2>Administrator</h2>
+				<p>Administrator system entrance. Administrator can do all CRUD
+					operations also overriding a book loan due date.</p>
+				<p>
+					<a class="btn btn-secondary" href="#/admin" role="button">Enter</a>
+				</p>
+			</div>
+			<!-- /.col-lg-4 -->
+			<div class="col-lg-4">
+				<img class="rounded-circle"
+					src="https://image.flaticon.com/icons/svg/206/206897.svg"
+					alt="Generic placeholder image" width="140" height="140">
+				<h2>Librarian</h2>
+				<p>Librarian system entrance. Librarian can change name or
+					address of a branch. Also a librarian can add or delete book/books
+					from branch inventory.</p>
+				<p>
+					<a class="btn btn-secondary" href="#/librarian" role="button">Enter</a>
+				</p>
+			</div>
+			<!-- /.col-lg-4 -->
+			<div class="col-lg-4">
+				<img class="rounded-circle"
+					src="https://d2gg9evh47fn9z.cloudfront.net/800px_COLOURBOX10949057.jpg"
+					alt="Generic placeholder image" width="140" height="140">
+				<h2>Borrower</h2>
+				<p>Borrower system login. Borrower can check out or check in
+					book/books from any library branch.</p>
+				<p>
+					<a class="btn btn-secondary"
+						href="http://getbootstrap.com/docs/4.1/examples/carousel/#"
+						role="button" data-toggle="modal" data-target="#borrowerLogin">Enter</a>
+				</p>
+				<!-- Modal for borrower login. It takes cardNo and checks it from borrower database table -->
+				<div id="borrowerLogin" class="modal fade" tabindex="-1"
+					role="dialog" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h3>Login</h3>
+								<button type="button" class="close" data-dismiss="modal"
+									aria-hidden="true">X</button>
+							</div>
+							<div class="modal-body">
+								<!-- Form yerine div olunca tek seferde calisti -->
+								<div class="form" id="formLogin" method="POST">
+									<div class="form-group">
+										<label>User Card No</label> <input type="password"
+											ng-model="borrowerCardNo"
+											class="form-control form-control-lg" id="borCardNo">
+										<div class="invalid-feedback">Enter your password too!</div>
+									</div>
+									<div class="form-group py-4">
+										<button class="btn btn-outline-secondary btn-lg"
+											data-dismiss="modal" aria-hidden="true">Cancel</button>
+
+										<button type="button" ng-click="checkBorrower()"
+											data-dismiss="modal"
+											class="btn btn-success btn-lg float-right" id="btnLogin">Login</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /.row -->

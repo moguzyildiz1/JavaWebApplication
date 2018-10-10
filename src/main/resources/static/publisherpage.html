@@ -1,0 +1,109 @@
+<div class="container marketing" ng-controller="adminPublisherController">
+	<h1>List of Publishers in LMS</h1>
+	<div class="col-md-10">
+		<ul class="pagination">
+			<li class="page-item"><a class="page-link" href=""
+				ng-click="pagination.prevPage()">&laquo;</a></li>
+			<li class="page-item"
+				ng-repeat="n in [] | range: pagination.numPages"
+				ng-class="{active: n == pagination.page}"><a class="page-link"
+				href="" ng-click="pagination.toPageId(n)">{{n + 1}}</a></li>
+			<li class="page-item"><a class="page-link" href=""
+				ng-click="pagination.nextPage()">&raquo;</a></li>
+		</ul>
+	</div>
+	<div id="listOfPublishers">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Publisher name</th>
+					<th scope="col">Publisher address</th>
+					<th scope="col">Publisher phone</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr
+					ng-repeat="publisher in ::publishers | startFrom: pagination.page * pagination.perPage | limitTo: pagination.perPage">
+					<td>{{$index+1}}</td>
+					<td>{{publisher.pubName}}</td>
+					<td>{{publisher.pubAddress}}</td>
+					<td>{{publisher.pubPhone}}</td>
+					<th scope="col"><button type="button" class="btn btn-primary"
+							data-toggle="modal" data-target="#editPublisherModal"
+							ng-click="passToPublisher(publisher)">Edit</button></th>
+					<th scope="col"><button type="button" class="btn btn-danger"
+							ng-click="deletePublisher(publisher)">Delete</button></th>
+				</tr>
+			</tbody>
+		</table>
+		<button type="button" class="btn btn-primary" data-toggle="modal"
+			data-target="#addModal">Add New Publisher</button>
+	</div>
+
+	<!-- START- Add Modal - START -->
+	<div class="modal fade" id="addModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Add new publisher</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container">
+						Enter publisher name to add:<br /> <input type="text" size="40"
+							maxlength="45" ng-model="addedPublisherName">
+					</div>
+					<div class="container">
+						Enter publisher address to add:<br /> <input type="text" size="40"
+							maxlength="45" ng-model="addedPublisherAddress">
+					</div>
+					<div class="container">
+						Enter publisher phone to add:<br /> <input type="text" size="40"
+							maxlength="45" ng-model="addedPublisherPhone">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="savePublisher()" data-dismiss="modal">Add publisher</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- END - Add Modal - END -->
+	
+	<!-- START- EDIT Modal - START -->
+	<div class="modal fade" id="editPublisherModal" tabindex="-1"
+		role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Edit Genre</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container">
+						Enter new publisher name to edit:<br /> <input type="text"
+							maxlength="45" ng-model="passPublisher.pubName"
+							value="passPublisher.pubName">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="editPublisher(passPublisher)" data-dismiss="modal">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

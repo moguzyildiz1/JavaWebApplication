@@ -1,0 +1,104 @@
+<div class="container marketing" ng-controller="borrowerController">
+	<h1>List of Branches in LMS</h1>
+	<div class="col-md-10">
+		<ul class="pagination">
+			<li class="page-item"><a class="page-link" href=""
+				ng-click="pagination.prevPage()">&laquo;</a></li>
+			<li class="page-item"
+				ng-repeat="n in [] | range: pagination.numPages"
+				ng-class="{active: n == pagination.page}"><a class="page-link"
+				href="" ng-click="pagination.toPageId(n)">{{n + 1}}</a></li>
+			<li class="page-item"><a class="page-link" href=""
+				ng-click="pagination.nextPage()">&raquo;</a></li>
+		</ul>
+	</div>
+	<div id="listOfBranches">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Branch name</th>
+					<th scope="col">Branch address</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr
+					ng-repeat="branch in ::branches | startFrom: pagination.page * pagination.perPage | limitTo: pagination.perPage">
+					<td>{{$index+1}}</td>
+					<td>{{branch.branchName}}</td>
+					<td>{{branch.branchAddress}}</td>
+					<th scope="col"><button type="button" class="btn btn-primary"
+							data-toggle="modal" data-target="#booksModal"
+							ng-click="availableBooks(branch)">Go to Branch</button></th>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="modal fade" id="booksModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Check out book</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="col-md-10">
+						<ul class="pagination">
+							<li class="page-item"><a class="page-link" href=""
+								ng-click="pagination1.prevPage()">&laquo;</a></li>
+							<li class="page-item"
+								ng-repeat="n in [] | range: pagination1.numPages"
+								ng-class="{active: n == pagination1.page}"><a
+								class="page-link" href="" ng-click="pagination1.toPageId(n)">{{n+1}}</a></li>
+							<li class="page-item"><a class="page-link" href=""
+								ng-click="pagination1.nextPage()">&raquo;</a></li>
+						</ul>
+					</div>
+					<div id="listOfBooks">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th scope="col">#</th>
+									<th scope="col">Book Title</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr
+									ng-repeat="bk in ::books | startFrom: pagination1.page * pagination1.perPage | limitTo: pagination1.perPage">
+									<td>{{$index+1}}</td>
+									<td>{{bk.title}}</td>
+									<td><span ng-repeat="a in bk.authors">{{a.authorName}}<span
+											ng-if="!$last"> , </span></span></td>
+									<th scope="col"><button type="button"
+											class="btn btn-primary" data-toggle="modal"
+											data-dismiss="modal" data-target="#resultModal"
+											ng-click="checkOut(bk)">CheckOut</th>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Result modal -->
+	<div class="modal fade" id="resultModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">{{resultMessage}}</h5>
+					<button type="button" data-dismiss="modal"
+						class="btn btn-success btn-lg float-right" id="btnLogin">OK</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- Result modal -->
+</div>
+</div>
