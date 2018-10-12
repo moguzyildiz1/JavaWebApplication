@@ -15,40 +15,47 @@ import com.gcit.lms.service.AdminAuthorService;
 @RestController
 @RequestMapping("/admin/author/*")
 public class AdminAuthorController {
-	
+
 	@Autowired
 	AdminAuthorService adminAutService;
 
-	@RequestMapping("/readAuthors")
+	// ***************************************************************************
+	//
+	@RequestMapping(value = "/readAuthors", produces = { "application/json", "application/xml" })
 	public List<Author> readAllAuthors(@RequestParam("name") String name) {
 		return adminAutService.readAuthors(name);
 	}
-	//***************************************************************************
+
+	// ***************************************************************************
 	//
-	@RequestMapping("/readAuthorById")
+	@RequestMapping(value = "/readAuthorById", produces = { "application/json", "application/xml" })
 	public Author readAuthorById(@RequestParam("id") Integer id) {
 		return adminAutService.readAuthorById(id);
 	}
-	//***************************************************************************
+
+	// ***************************************************************************
 	//
-	@RequestMapping("/saveAuthorWithId")
+	@RequestMapping(value = "/saveAuthorWithId", produces = { "application/json", "application/xml" })
 	public Integer saveAuthorWithId(@RequestParam("name") String name) {
 		return adminAutService.saveAuthorWithId(name);
-	}	
-	//***************************************************************************
+	}
+
+	// ***************************************************************************
 	//
 	@RequestMapping("/initAuthor")
 	public Author initAuthor() {
 		return new Author();
 	}
-	//	@RequestMapping("/saveAuthorByName")
-	//	public List<Author> readAuthorsByName(@RequestParam("name") String name) {
+
+	// @RequestMapping("/saveAuthorByName")
+	// public List<Author> readAuthorsByName(@RequestParam("name") String name) {
 	//
-	//		return adminAutService.readAuthorsByName(name);
-	//	}
-	@RequestMapping(name = "/saveAuthor", method = RequestMethod.POST)
+	// return adminAutService.readAuthorsByName(name);
+	// }
+	@RequestMapping(name = "/saveAuthor", method = RequestMethod.POST, produces = { "application/json",
+			"application/xml" })
 	public String saveAuthor(@RequestBody Author author) {
 		return adminAutService.saveAuthor(author);
 	}
-	
+
 }

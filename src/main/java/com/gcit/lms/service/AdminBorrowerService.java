@@ -106,39 +106,16 @@ public class AdminBorrowerService {
 	}
 	//************************************************************************
 	//	
-	public String saveBorrower(Borrower borrower) {
-		String returnString = "";
+	public Borrower saveBorrower(Borrower borrower) {
+		Borrower returnB= new Borrower();
 		try {
-			borrowerRepo.save(borrower);
-			returnString = "Auther saved sucessfully";
+			returnB=borrowerRepo.saveAndFlush(borrower);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return returnString;
+		return returnB;
 	}
-
-	//	public String addLoan(RegisterBookDTO registerbto) {
-	//
-	//		Borrower borrower = borrowerRepo.readBorrowerByNo(Integer.getInteger(registerbto.getCardNo()));
-	//		Book book = bookRepo.readBookById(Integer.getInteger(registerbto.getBookId()));
-	//		Library library = libraryRepo.readLibraryById(Integer.getInteger(registerbto.getBranchId()));
-	//
-	//		if (borrower == null) {
-	//			return "Unregistered User Card No";
-	//		} else {
-	//			Loan loan = new Loan();
-	//			loan.setBorrower(borrower);
-	//			loan.setBook(book);
-	//			loan.setLibrary(library);
-	//			java.sql.Date dateOut = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-	//			java.sql.Date dueDate = addDays(dateOut,7);
-	//			loan.setDateOut(dateOut);
-	//			loan.setDueDate(dueDate);
-	//			borrower.getLoans().add(loan);
-	//		}
-	//		return "You successfully check-out book";
-	//	}
-
+	//************************************************************************
 	// Helper method to adding day to sql.Date objects
 	public Date addDays(Date date, int days) {
 		Calendar c = Calendar.getInstance();

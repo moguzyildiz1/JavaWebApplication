@@ -17,7 +17,7 @@ public class AdminPublisherService {
 	@Autowired
 	PublisherRepository publisherRepo;
 
-	//****************************************************************************************
+	// ****************************************************************************************
 	//
 	public List<Publisher> readPublishers(@RequestParam String name) {
 		List<Publisher> publishers = new ArrayList<>();
@@ -32,7 +32,8 @@ public class AdminPublisherService {
 		}
 		return publishers;
 	}
-	//****************************************************************************************
+
+	// ****************************************************************************************
 	//
 	public Publisher readPublisherById(Integer id) {
 		Publisher publisher = new Publisher();
@@ -43,8 +44,9 @@ public class AdminPublisherService {
 		}
 		return publisher;
 	}
-	//************************************************************************
-	//		
+
+	// ************************************************************************
+	//
 	public ErrorResponse editPublisher(String pName, Integer pId) {
 		ErrorResponse resp = new ErrorResponse();
 		try {
@@ -56,8 +58,9 @@ public class AdminPublisherService {
 		}
 		return resp;
 	}
-	//************************************************************************
-	//		
+
+	// ************************************************************************
+	//
 	public ErrorResponse deletePublisher(Integer pId) {
 		ErrorResponse resp = new ErrorResponse();
 		try {
@@ -69,50 +72,52 @@ public class AdminPublisherService {
 		}
 		return resp;
 	}
-	//************************************************************************
+
+	// ************************************************************************
 	//
 	public ErrorResponse savePublisherByParam(String pName, String pAddress, String pPhone) {
 		ErrorResponse resp = new ErrorResponse();
 		Integer newId;
-		Publisher publisher=new Publisher();
+		Publisher publisher = new Publisher();
 		publisher.setPubName(pName);
 		publisher.setPubAddress(pAddress);
 		publisher.setPubPhone(pPhone);
 		try {
-			newId=(publisherRepo.saveAndFlush(publisher)).getPublisherId();
-			resp.setErrorMessage("Publisher added sucessfully with id: "+newId);
+			newId = (publisherRepo.saveAndFlush(publisher)).getPublisherId();
+			resp.setErrorMessage("Publisher added sucessfully with id: " + newId);
 		} catch (Exception e) {
 			resp.setErrorMessage("Exception occurred. Failed to update.");
 			e.printStackTrace();
 		}
 		return resp;
 	}
-	//************************************************************************
+
+	// ************************************************************************
 	//
 	public Integer savePublisherWithId(String pName, String pAddress, String pPhone) {
-		
-		Integer newId=0;
-		Publisher publisher=new Publisher();
+
+		Integer newId = 0;
+		Publisher publisher = new Publisher();
 		publisher.setPubName(pName);
 		publisher.setPubAddress(pAddress);
 		publisher.setPubPhone(pPhone);
 		try {
-			newId=(publisherRepo.saveAndFlush(publisher)).getPublisherId();
+			newId = (publisherRepo.saveAndFlush(publisher)).getPublisherId();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return newId;
 	}
-	//****************************************************************************************
+
+	// ****************************************************************************************
 	//
-	public String savePublisher(Publisher publisher) {
-		String returnString = "";
+	public Publisher savePublisher(Publisher publisher) {
+		Publisher returnedPub = new Publisher();
 		try {
-			publisherRepo.save(publisher);
-			returnString = "Publisher saved sucessfully";
+			returnedPub=publisherRepo.saveAndFlush(publisher);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return returnString;
+		return returnedPub;
 	}
 }

@@ -23,28 +23,28 @@ public class BorrowerController {
 	@Autowired
 	BorrowerService borrowerService;
 	
-	@RequestMapping("/checkById")
+	@RequestMapping(value="/checkById", produces={"application/json","application/xml"})
 	public boolean checkById(@RequestParam("cardNo") Integer cardNo) {
 		return borrowerService.checkById(cardNo);
 	}
 	
-	@RequestMapping("/availableBooks")
+	@RequestMapping(value="/availableBooks", produces={"application/json","application/xml"})
 	public List<Book> readAvailableBooks(@RequestParam("branchId") Integer branchId) {
 		return borrowerService.readAvailableBooks(branchId);
 	}
 	
-	@RequestMapping("/readLoans")
+	@RequestMapping(value="/readLoans", produces={"application/json","application/xml"})
 	public List<Loan> readLoans(@RequestParam("cardNo") Integer cardNo) {
 		return borrowerService.readLoans(cardNo);
 	}
 
-	@RequestMapping("/checkOut")
+	@RequestMapping(value="/checkOut", produces={"application/json","application/xml"})
 	public ResponseEntity<String> checkOutBook(@RequestParam("cardNo") Integer cardNo, @RequestParam("branchId") Integer branchId,
 			@RequestParam("bookId") Integer bookId) {
 		return borrowerService.checkOutBook(cardNo, branchId, bookId);
 	}
 
-	@RequestMapping("/checkIn")
+	@RequestMapping(value="/checkIn", produces={"application/json","application/xml"})
 	public String checkInBook(@RequestParam("cardNo") Integer cardNo, @RequestParam("branchId") Integer branchId,
 			@RequestParam("bookId") Integer bookId) {
 		return borrowerService.checkInBook(cardNo, branchId, bookId);

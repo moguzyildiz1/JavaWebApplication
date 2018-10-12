@@ -76,16 +76,13 @@ public class AdminBookService {
 	}
 	//****************************************************************************
 	//
-	public ErrorResponse saveBook(Book book) {
-		ErrorResponse resp = new ErrorResponse();
+	public Book saveBook(Book book) {
+		Book returnedBook = new Book();
 		try {
-			bookRepo.save(book);
-			resp.setErrorMessage("Book successfully added.");
+			returnedBook=bookRepo.saveAndFlush(book);
 		} catch (Exception e) {
-			resp.setErrorMessage("Exception occurred. Failed to update.");
 			e.printStackTrace();
 		}
-
-		return resp;
+		return returnedBook;
 	}
 }

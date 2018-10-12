@@ -15,24 +15,25 @@ import com.gcit.lms.service.LibrarianService;
 @RestController
 @RequestMapping("/admin/library/*")
 public class AdminLibraryController {
-	
+
 	@Autowired
 	LibrarianService libService;
 
-	@RequestMapping("/readLibraries")
+	@RequestMapping(value = "/readLibraries", produces = { "application/json", "application/xml" })
 	public List<Library> readAllLibrarys(@RequestParam("name") String name) {
 		return libService.readLibraries(name);
 	}
-	
-	@RequestMapping("/readLibraryById")
+
+	@RequestMapping(value = "/readLibraryById", produces = { "application/json", "application/xml" })
 	public Library readLibraryById(@RequestParam("id") Integer id) {
 
 		return libService.readLibraryById(id);
 	}
 
-	@RequestMapping(name = "/saveLibrary", method = RequestMethod.POST)
-	public String saveLibrary(@RequestBody Library library) {
+	@RequestMapping(name = "/saveLibrary", method = RequestMethod.POST, produces = { "application/json",
+			"application/xml" })
+	public Library saveLibrary(@RequestBody Library library) {
 		return libService.saveLibrary(library);
 	}
-	
+
 }

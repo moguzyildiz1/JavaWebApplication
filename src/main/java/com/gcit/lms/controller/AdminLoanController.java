@@ -21,14 +21,14 @@ public class AdminLoanController {
 	
 	// *************************************************************************
 	//
-	@RequestMapping("/readLoans")
+	@RequestMapping(value="/readLoans", produces={"application/json","application/xml"})
 	public List<Loan> readAllAuthors() {
 		return adminService.readLoans();
 	}
 	
 	// *************************************************************************
 	//
-	@RequestMapping("/editLoan")
+	@RequestMapping(value="/editLoan", produces={"application/json","application/xml"})
 	public ErrorResponse editLoan(@RequestParam("cardNo") Integer cardNo, @RequestParam("branchId") Integer branchId,
 			@RequestParam("bookId") Integer bookId, @RequestParam("dueDate") Date dueDate) {
 		return adminService.editLoan(cardNo, branchId, bookId, dueDate);

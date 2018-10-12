@@ -101,14 +101,13 @@ public class AdminGenreService {
 	}
 	//************************************************************************
 	//
-	public String saveGenre(Genre genre) {
-		String returnString = "";
+	public Genre saveGenre(Genre genre) {
+		Genre returnedGenre= new Genre();
 		try {
-			genreRepo.save(genre);
-			returnString = "Auther saved sucessfully";
+			returnedGenre=genreRepo.saveAndFlush(genre);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return returnString;
+		return returnedGenre;
 	}
 }

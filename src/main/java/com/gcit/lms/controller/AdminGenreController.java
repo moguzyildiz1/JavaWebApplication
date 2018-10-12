@@ -20,52 +20,60 @@ public class AdminGenreController {
 	@Autowired
 	AdminGenreService adminService;
 
-	//************************************************************************
+	// ************************************************************************
 	//
-	@RequestMapping("/readGenres")
+	@RequestMapping(value = "/readGenres", produces = { "application/json", "application/xml" })
 	public List<Genre> readGenres(@RequestParam("name") String name) {
 		return adminService.readGenres(name);
 	}
-	//************************************************************************
+
+	// ************************************************************************
 	//
-	@RequestMapping("/readGenreById")
+	@RequestMapping(value = "/readGenreById", produces = { "application/json", "application/xml" })
 	public Genre readGenreById(@RequestParam("id") Integer id) {
 		return adminService.readGenreById(id);
 	}
-	//************************************************************************
+
+	// ************************************************************************
 	//
-	@RequestMapping("/initGenre")
+	@RequestMapping(value = "/initGenre", produces = { "application/json", "application/xml" })
 	public Genre initGenre() {
 		return new Genre();
 	}
-	//************************************************************************
+
+	// ************************************************************************
 	//
-	@RequestMapping("/deleteGenre")
+	@RequestMapping(value = "/deleteGenre", produces = { "application/json", "application/xml" })
 	public ErrorResponse deleteGenre(@RequestParam("id") Integer id) {
 		return adminService.deleteGenre(id);
 	}
-	//************************************************************************
+
+	// ************************************************************************
 	//
-	@RequestMapping("/editGenre")
+	@RequestMapping(value = "/editGenre", produces = { "application/json", "application/xml" })
 	public ErrorResponse editGenre(@RequestParam("name") String gName, @RequestParam("id") Integer gId) {
-		return adminService.editGenre(gName,gId);
+		return adminService.editGenre(gName, gId);
 	}
-	//************************************************************************
+
+	// ************************************************************************
 	//
-	@RequestMapping("/saveGenreByName")
+	@RequestMapping(value = "/saveGenreByName", produces = { "application/json", "application/xml" })
 	public ErrorResponse saveGenreByName(@RequestParam("name") String gName) {
 		return adminService.saveGenreByName(gName);
 	}
-	//************************************************************************
+
+	// ************************************************************************
 	//
-	@RequestMapping("/saveGenreWithId")
+	@RequestMapping(value = "/saveGenreWithId", produces = { "application/json", "application/xml" })
 	public Integer saveGenreWithId(@RequestParam("name") String gName) {
 		return adminService.saveGenreWithId(gName);
 	}
-	//************************************************************************
+
+	// ************************************************************************
 	//
-	@RequestMapping(name = "/saveGenre", method = RequestMethod.POST)
-	public String saveGenre(@RequestBody Genre genre) {
+	@RequestMapping(name = "/saveGenre", method = RequestMethod.POST, produces = { "application/json",
+			"application/xml" })
+	public Genre saveGenre(@RequestBody Genre genre) {
 		return adminService.saveGenre(genre);
-	}	
+	}
 }
