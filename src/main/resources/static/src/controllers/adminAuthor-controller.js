@@ -38,15 +38,15 @@ lmsApp.controller("authorController", function($scope, $http, lmsService,
 		var delAuthor = {
 			authorId : authorId
 		}
-		lmsService.postObj(lmsConstants.LMS_HOST + lmsConstants.SAVE_AUTHOR,
+		lmsService.postObj(lmsConstants.LMS_HOST + lmsConstants.DELETE_AUTHOR,
 				delAuthor).then(
 				function() {
 					lmsService.getAll(
 							lmsConstants.LMS_HOST
 									+ lmsConstants.READ_ALL_AUTHORS).then(
-							function(data) {
-								$scope.authors = data;
-								$scope.pagination = Pagination.getNew(10);
+							function(response) {
+								$scope.authors = response;
+								$scope.pagination = Pagination.getNew(20);
 								$scope.pagination.numPages = Math.ceil($scope.authors.length/$scope.pagination.perPage);
 							})
 				})
@@ -80,7 +80,7 @@ lmsApp.controller("authorController", function($scope, $http, lmsService,
 		.getAll(lmsConstants.LMS_HOST + lmsConstants.READ_ALL_AUTHORS+$scope.searchAuthor)
 		.then(function(result) {
 			$scope.authors = result;
-			$scope.pagination = Pagination.getNew(10);
+			$scope.pagination = Pagination.getNew(20);
 			$scope.pagination.numPages = Math.ceil($scope.authors.length/$scope.pagination.perPage);
 			$window.location.href ="#/authorpage";
 		})

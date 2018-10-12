@@ -1,17 +1,20 @@
 package com.gcit.lms.controller;
 
-import java.util.List;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.gcit.lms.entity.Genre;
 import com.gcit.lms.service.AdminGenreService;
-import com.gcit.lms.util.ErrorResponse;
+import com.gcit.lms.util.ForbiddenException;
 
 @RestController
 @RequestMapping("/admin/genre/*")
@@ -22,15 +25,22 @@ public class AdminGenreController {
 
 	// ************************************************************************
 	//
+	@RequestMapping(value = "", produces = { "application/json", "application/xml" })
+	@ResponseBody
+	public ResponseEntity<?> sendViaResponseEntity() {
+	    throw new ForbiddenException();
+	}
+	// ************************************************************************
+	//
 	@RequestMapping(value = "/readGenres", produces = { "application/json", "application/xml" })
-	public List<Genre> readGenres(@RequestParam("name") String name) {
+	public ResponseEntity<?> readGenres(@RequestParam("name") String name) {
 		return adminService.readGenres(name);
 	}
 
 	// ************************************************************************
 	//
 	@RequestMapping(value = "/readGenreById", produces = { "application/json", "application/xml" })
-	public Genre readGenreById(@RequestParam("id") Integer id) {
+	public ResponseEntity<?> readGenreById(@RequestParam("id") Integer id) {
 		return adminService.readGenreById(id);
 	}
 
@@ -44,21 +54,21 @@ public class AdminGenreController {
 	// ************************************************************************
 	//
 	@RequestMapping(value = "/deleteGenre", produces = { "application/json", "application/xml" })
-	public ErrorResponse deleteGenre(@RequestParam("id") Integer id) {
+	public ResponseEntity<?> deleteGenre(@RequestParam("id") Integer id) {
 		return adminService.deleteGenre(id);
 	}
 
 	// ************************************************************************
 	//
 	@RequestMapping(value = "/editGenre", produces = { "application/json", "application/xml" })
-	public ErrorResponse editGenre(@RequestParam("name") String gName, @RequestParam("id") Integer gId) {
+	public ResponseEntity<?> editGenre(@RequestParam("name") String gName, @RequestParam("id") Integer gId) {
 		return adminService.editGenre(gName, gId);
 	}
 
 	// ************************************************************************
 	//
 	@RequestMapping(value = "/saveGenreByName", produces = { "application/json", "application/xml" })
-	public ErrorResponse saveGenreByName(@RequestParam("name") String gName) {
+	public ResponseEntity<?> saveGenreByName(@RequestParam("name") String gName) {
 		return adminService.saveGenreByName(gName);
 	}
 
@@ -68,12 +78,18 @@ public class AdminGenreController {
 	public Integer saveGenreWithId(@RequestParam("name") String gName) {
 		return adminService.saveGenreWithId(gName);
 	}
-
+	//************************************************************************
+	//Returns custom http response message 
+	@RequestMapping(value = "/createGenre", method = RequestMethod.POST, produces = { "application/json",
+	"application/xml" })
+	public ResponseEntity<?> saveGenre(@Valid @RequestBody Genre genre, UriComponentsBuilder ucBuilder) {
+	    return adminService.saveGenre(genre, ucBuilder);
+	}
 	// ************************************************************************
 	//
-	@RequestMapping(name = "/saveGenre", method = RequestMethod.POST, produces = { "application/json",
-			"application/xml" })
-	public Genre saveGenre(@RequestBody Genre genre) {
-		return adminService.saveGenre(genre);
-	}
+//	@RequestMapping(value = "/saveGenre", method = RequestMethod.POST, produces = { "application/json",
+//			"application/xml" })
+//	public ResponseEntity<?> saveGenre(@RequestBody Genre genre) {
+//		return adminService.saveGenre(genre);
+//	}
 }

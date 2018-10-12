@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.gcit.lms.entity.Genre;
 import com.gcit.lms.repositories.GenreRepository;
-import com.gcit.lms.util.ErrorResponse;
+import com.gcit.lms.util.GenreAlreadyExistsException;
 
 @Service
 public class AdminGenreService {
@@ -19,7 +23,7 @@ public class AdminGenreService {
 	
 	//************************************************************************
 	//
-	public List<Genre> readGenres(@RequestParam String name) {
+	public ResponseEntity<?> readGenres(@RequestParam String name) {
 		List<Genre> genres = new ArrayList<>();
 		try {
 			if (!name.isEmpty()) {
@@ -28,62 +32,61 @@ public class AdminGenreService {
 				genres = (List<Genre>) genreRepo.findAll();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			return new ResponseEntity<>(e.getStackTrace(),HttpStatus.NOT_FOUND);
 		}
-		return genres;
+		return new ResponseEntity<>(genres,HttpStatus.ACCEPTED);
 	}
 	//************************************************************************
 	//		
-	public Genre readGenreById(Integer id) {
+	public ResponseEntity<?> readGenreById(Integer id) {
 		Genre genre = new Genre();
 		try {
 			genre = genreRepo.readGenreById(id);
+			if(genre==null) {
+				return new ResponseEntity<>(genre,HttpStatus.NOT_FOUND);
+			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			return new ResponseEntity<>(e.getStackTrace(),HttpStatus.NOT_FOUND);
 		}
-		return genre;
+		return new ResponseEntity<>(genre,HttpStatus.ACCEPTED);
 	}
 	//************************************************************************
 	//		
-	public ErrorResponse editGenre(String genreName, Integer genreId) {
-		ErrorResponse resp = new ErrorResponse();
+	public ResponseEntity<?> editGenre(String genreName, Integer genreId) {
+		Genre genre = new Genre();
 		try {
 			genreRepo.editGenre(genreName, genreId);
-			resp.setErrorMessage("Successfully editted.");
+			genre=genreRepo.readGenreById(genreId);
 		} catch (Exception e) {
-			resp.setErrorMessage("Exception occurred. Failed to update.");
-			e.printStackTrace();
+			return new ResponseEntity<>(e.getStackTrace(),HttpStatus.NOT_FOUND);
 		}
-		return resp;
+		return new ResponseEntity<>(genre,HttpStatus.ACCEPTED);
 	}
 	//************************************************************************
 	//		
-	public ErrorResponse deleteGenre(Integer id) {
-		ErrorResponse resp = new ErrorResponse();
+	public ResponseEntity<?> deleteGenre(Integer id) {
+		Genre genre = new Genre();
 		try {
+			genre=genreRepo.readGenreById(id);
 			genreRepo.deleteById(id);
-			resp.setErrorMessage("Successfully deleted.");
 		} catch (Exception e) {
-			resp.setErrorMessage("Exception occurred. Failed to update.");
-			e.printStackTrace();
+			return new ResponseEntity<>(e.getStackTrace(),HttpStatus.NOT_FOUND);
 		}
-		return resp;
+		return new ResponseEntity<>(genre,HttpStatus.ACCEPTED);
 	}
 	//************************************************************************
 	//
-	public ErrorResponse saveGenreByName(String gName) {
-		ErrorResponse resp = new ErrorResponse();
+	public ResponseEntity<?> saveGenreByName(String gName) {
 		Integer newId;
 		Genre genre=new Genre();
 		genre.setGenreName(gName);
 		try {
 			newId=(genreRepo.saveAndFlush(genre)).getGenreId();
-			resp.setErrorMessage("Genre adder sucessfully with id: "+newId);
+			genre=genreRepo.readGenreById(newId);
 		} catch (Exception e) {
-			resp.setErrorMessage("Exception occurred. Failed to update.");
-			e.printStackTrace();
+			return new ResponseEntity<>(e.getStackTrace(),HttpStatus.NOT_FOUND);
 		}
-		return resp;
+		return new ResponseEntity<>(genre,HttpStatus.ACCEPTED);
 	}
 	//************************************************************************
 	//
@@ -101,13 +104,24 @@ public class AdminGenreService {
 	}
 	//************************************************************************
 	//
-	public Genre saveGenre(Genre genre) {
-		Genre returnedGenre= new Genre();
-		try {
-			returnedGenre=genreRepo.saveAndFlush(genre);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return returnedGenre;
+	public ResponseEntity<?> saveGenre(Genre genre, UriComponentsBuilder ucBuilder) {
+	    if (genreRepo.findByName(genre.getGenreName()).getGenreId()!=null) {
+	        throw new GenreAlreadyExistsException();
+	    }
+	    genre=genreRepo.saveAndFlush(genre);
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setLocation(ucBuilder.path("/admin/genre/createGenre?id=").buildAndExpand(genre.getGenreId()).toUri());
+	    return new ResponseEntity<>(headers, HttpStatus.CREATED);
 	}
+	//************************************************************************
+	//
+//	public Genre saveGenre(Genre genre) {
+//		Genre returnedGenre= new Genre();
+//		try {
+//			returnedGenre=genreRepo.saveAndFlush(genre);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return returnedGenre;
+//	}
 }
