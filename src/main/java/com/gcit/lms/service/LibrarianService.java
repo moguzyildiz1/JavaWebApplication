@@ -147,14 +147,13 @@ public class LibrarianService {
 	
 	//***************************************************************************************
 	//
-	public String saveLibrary(Library library) {
-		String returnString = "";
+	public Library saveLibrary(Library library) {
+		Library returnLib = new Library();
 		try {
-			libraryRepo.save(library);
-			returnString = "You added library successfully";
+			returnLib=libraryRepo.saveAndFlush(library);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return returnString;
+		return returnLib;
 	}
 }

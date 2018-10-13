@@ -18,6 +18,9 @@ public interface GenreRepository extends JpaRepository<Genre, Integer> {
 	@Query("from Genre where genreName like %:name%")
 	public List<Genre> readGenres(@Param(value = "name") String genreName);
 	
+	@Query("from Genre where genreName=:name")
+	public Genre findByName(@Param(value = "name") String genreName);
+	
 	@Query("from Genre where genreId=:id")
 	public Genre readGenreById(@Param(value = "id") Integer id);
 	

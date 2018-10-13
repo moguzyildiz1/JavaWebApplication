@@ -4,7 +4,8 @@ lmsApp.constant("lmsConstants", {
 	INIT_GENRE: "admin/genre/initGenre",
 	
 	READ_ALL_AUTHORS:"admin/author/readAuthors?name=",
-	SAVE_AUTHOR: "saveAuthor",
+	SAVE_AUTHOR: "admin/author/saveAuthor",
+	DELETE_AUTHOR: "admin/author/deleteAuthor",
 	SAVE_AUTHOR_ID: "admin/author/saveAuthorWithId",
 	INIT_AUTHOR: "admin/author/initAuthor",		
 	

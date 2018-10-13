@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -16,68 +18,67 @@ public class AdminAuthorService {
 	@Autowired
 	AuthorRepository authorRepo;
 
-	//***********************************************************************************************
+	// ***********************************************************************************************
 	//
-	public List<Author> readAuthors(@RequestParam String name) {
+	public ResponseEntity<?> readAuthors(@RequestParam String name) {
 		List<Author> authors = new ArrayList<>();
 		try {
 			if (!name.isEmpty()) {
 				authors = authorRepo.readAuthors(name);
+				return new ResponseEntity<>(authors,HttpStatus.ACCEPTED);
 			} else {
 				authors = (List<Author>) authorRepo.findAll();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return authors;
+		return new ResponseEntity<>(authors,HttpStatus.OK);
 	}
-	//**********************************************************************************************
+
+	// **********************************************************************************************
 	//
 	public Integer saveAuthorWithId(String aName) {
-		
-		Integer newId=0;
-		Author author =new Author();
+
+		Integer newId = 0;
+		Author author = new Author();
 		author.setAuthorName(aName);
 		try {
-			newId=(authorRepo.saveAndFlush(author)).getAuthorId();
+			newId = (authorRepo.saveAndFlush(author)).getAuthorId();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return newId;
 	}
-
-	//***********************************************************************************************
+	// ***********************************************************************************************
 	//
-	public Author readAuthorById(Integer id) {
+	public ResponseEntity<?> readAuthorById(Integer id) {
 		Author author = new Author();
 		try {
 			author = authorRepo.readAuthorsById(id);
+			return new ResponseEntity<>(author,HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return author;
+		return new ResponseEntity<>(author,HttpStatus.OK);
 	}
-	//***********************************************************************************************
+	// ***********************************************************************************************
 	//
-	public String saveAuthor(Author author) {
-		String returnString = "";
+	public ResponseEntity<?> deleteAuthor(Author author) {
+		try {
+			authorRepo.delete(author);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getStackTrace(), HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<>(author, HttpStatus.ACCEPTED);
+	}
+	// ***********************************************************************************************
+	//
+	public ResponseEntity<?> saveAuthor(Author author) {
 		try {
 			authorRepo.save(author);
-			// if (author.getAuthorId() != null && author.getAuthorName() !=
-			// null) {
-			// authorRepo.save(author);
-			// returnString = "Auther updated sucessfully";
-			// } else if (author.getAuthorId() != null) {
-			// adao.deleteAuthor(author);
-			// returnString = "Auther deleted sucessfully";
-			// } else {
-			// adao.addAuthor(author);
-			// returnString = "Auther saved sucessfully";
-			// }
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return returnString;
+		return new ResponseEntity<>(author, HttpStatus.CREATED);
 	}
-
 }

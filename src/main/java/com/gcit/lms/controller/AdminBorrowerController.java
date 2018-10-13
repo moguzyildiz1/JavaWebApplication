@@ -20,41 +20,47 @@ public class AdminBorrowerController {
 	@Autowired
 	AdminBorrowerService adminService;
 
-	//************************************************************************
+	// ************************************************************************
 	//
-	@RequestMapping("/readBorrowers")
+	@RequestMapping(value = "/readBorrowers", produces = { "application/json", "application/xml" })
 	public List<Borrower> readBorrower(@RequestParam("name") String name) {
 		return adminService.readBorrowers(name);
 	}
-	//************************************************************************
+
+	// ************************************************************************
 	//
-	@RequestMapping("/readBorrowerByNo")
+	@RequestMapping(value = "/readBorrowerByNo", produces = { "application/json", "application/xml" })
 	public Borrower readBorrowerById(@RequestParam("cardNo") Integer cardNo) {
 		return adminService.readBorrowerByNo(cardNo);
 	}
-	//************************************************************************
-	//
-	@RequestMapping("/editBorrower")
-	public ErrorResponse editBorrower(@RequestParam("name") String bName, @RequestParam("cardNo") Integer bCardNo) {
-		return adminService.editBorrower(bName,bCardNo);
-	}
+
 	// ************************************************************************
 	//
-	@RequestMapping("/deleteBorrower")
+	@RequestMapping(value = "/editBorrower", produces = { "application/json", "application/xml" })
+	public ErrorResponse editBorrower(@RequestParam("name") String bName, @RequestParam("cardNo") Integer bCardNo) {
+		return adminService.editBorrower(bName, bCardNo);
+	}
+
+	// ************************************************************************
+	//
+	@RequestMapping(value = "/deleteBorrower", produces = { "application/json", "application/xml" })
 	public ErrorResponse deleteBorrower(@RequestParam("cardNo") Integer bCardNo) {
 		return adminService.deleteBorrower(bCardNo);
 	}
+
 	// ************************************************************************
 	//
-	@RequestMapping("/saveBorrowerByParam")
-	public ErrorResponse saveBorrowerByParam(@RequestParam("name") String bName, @RequestParam("address") String bAddress,
-			@RequestParam("phone") String bPhone) {
-		return adminService.saveBorrowerByParam(bName,bAddress,bPhone);
+	@RequestMapping(value = "/saveBorrowerByParam", produces = { "application/json", "application/xml" })
+	public ErrorResponse saveBorrowerByParam(@RequestParam("name") String bName,
+			@RequestParam("address") String bAddress, @RequestParam("phone") String bPhone) {
+		return adminService.saveBorrowerByParam(bName, bAddress, bPhone);
 	}
-	//************************************************************************
+
+	// ************************************************************************
 	//
-	@RequestMapping(name = "/saveBorrower", method = RequestMethod.POST)
-	public String saveBorrower(@RequestBody Borrower borrower) {
+	@RequestMapping(name = "/saveBorrower", method = RequestMethod.POST, produces = { "application/json",
+			"application/xml" })
+	public Borrower saveBorrower(@RequestBody Borrower borrower) {
 		return adminService.saveBorrower(borrower);
 	}
 }

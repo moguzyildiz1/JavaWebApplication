@@ -23,21 +23,21 @@ public class LibrarianController {
 
 	// ***************************************************************************************
 	//
-	@RequestMapping("/readBranches")
+	@RequestMapping(value = "/readBranches", produces = { "application/json", "application/xml" })
 	public List<Library> readAllLibraries(@RequestParam("name") String name) {
 		return librarianService.readLibraries(name);
 	}
 
 	// ***************************************************************************************
 	//
-	@RequestMapping("/readBranchById")
+	@RequestMapping(value = "/readBranchById", produces = { "application/json", "application/xml" })
 	public Library readLibraryById(@RequestParam("id") Integer id) {
 		return librarianService.readLibraryById(id);
 	}
 
 	// ***************************************************************************************
 	//
-	@RequestMapping("/editBranchParams")
+	@RequestMapping(value = "/editBranchParams", produces = { "application/json", "application/xml" })
 	public String editLibrary(@RequestParam("id") Integer id, @RequestParam("bName") String bName,
 			@RequestParam("bAddress") String bAddress) {
 		return librarianService.editLibraryParams(id, bName, bAddress);
@@ -45,7 +45,7 @@ public class LibrarianController {
 
 	// ***************************************************************************************
 	//
-	@RequestMapping("/editInventory")
+	@RequestMapping(value = "/editInventory", produces = { "application/json", "application/xml" })
 	public ResponseEntity<String> editInventory(@RequestParam("branchId") Integer branchId,
 			@RequestParam("bookId") Integer bookId, @RequestParam("noCopy") Integer noCopy) {
 		return librarianService.editInventory(branchId, bookId, noCopy);
@@ -53,14 +53,15 @@ public class LibrarianController {
 
 	// ***************************************************************************************
 	//
-	@RequestMapping("/readInventoryById")
+	@RequestMapping(value = "/readInventoryById", produces = { "application/json", "application/xml" })
 	public List<Inventory> showInventory(@RequestParam("branchId") Integer branchId) {
 		return librarianService.readInventoryById(branchId);
 	}
 
 	// ***************************************************************************************
 	//
-	@RequestMapping(name = "/editBranch", method = RequestMethod.POST)
+	@RequestMapping(name = "/editBranch", method = RequestMethod.POST, produces = { "application/json",
+			"application/xml" })
 	public String editLibrary(@RequestBody Library Library) {
 		return librarianService.editLibrary(Library);
 	}

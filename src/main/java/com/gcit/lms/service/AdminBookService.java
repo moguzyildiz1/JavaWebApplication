@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.gcit.lms.entity.Book;
@@ -76,16 +78,13 @@ public class AdminBookService {
 	}
 	//****************************************************************************
 	//
-	public ErrorResponse saveBook(Book book) {
-		ErrorResponse resp = new ErrorResponse();
+	public ResponseEntity<?> saveBook(Book book) {
+		Book returnedBook = new Book();
 		try {
-			bookRepo.save(book);
-			resp.setErrorMessage("Book successfully added.");
+			returnedBook=bookRepo.saveAndFlush(book);
 		} catch (Exception e) {
-			resp.setErrorMessage("Exception occurred. Failed to update.");
-			e.printStackTrace();
+			return new ResponseEntity<>(e.getStackTrace(),HttpStatus.CONFLICT);
 		}
-
-		return resp;
+		return new ResponseEntity<>(returnedBook,HttpStatus.OK);
 	}
 }
