@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.gcit.lms.entity.Genre;
 import com.gcit.lms.service.AdminGenreService;
@@ -25,7 +24,7 @@ public class AdminGenreController {
 
 	// ************************************************************************
 	//
-	@RequestMapping(value = "", produces = { "application/json", "application/xml" })
+	@RequestMapping(value = "/", produces = { "application/json", "application/xml" })
 	@ResponseBody
 	public ResponseEntity<?> sendViaResponseEntity() {
 	    throw new ForbiddenException();
@@ -80,10 +79,10 @@ public class AdminGenreController {
 	}
 	//************************************************************************
 	//Returns custom http response message 
-	@RequestMapping(value = "/createGenre", method = RequestMethod.POST, produces = { "application/json",
+	@RequestMapping(value = "/saveGenre", method = RequestMethod.POST, produces = { "application/json",
 	"application/xml" })
-	public ResponseEntity<?> saveGenre(@Valid @RequestBody Genre genre, UriComponentsBuilder ucBuilder) {
-	    return adminService.saveGenre(genre, ucBuilder);
+	public ResponseEntity<?> saveGenre(@Valid @RequestBody Genre genre) {
+	    return adminService.saveGenre(genre);
 	}
 	// ************************************************************************
 	//
